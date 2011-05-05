@@ -24,22 +24,50 @@ module RubyDesk
       @api_secret = api_secret
       @api_token = api_token
     end
+    
+    def norm_params(params, rkey='')
+      line = '';
+      
+      if not params.instance_of? Hash
+        return line
+      end
+      
+      RubyDesk.logger.debug {"Params to sign: #{params.inspect}"}
+      sorted_params = params.sort { |a, b| a.to_s <=> b.to_s}
+      
+      RubyDesk.logger.debug {"Sorted params: #{sorted_params.inspect}"}
+      
+      sorted_params.map do |k, v|
+        line += (v.is_a?(Hash) ?  norm_params(v, k.to_s) : 
+                                          (rkey + k.to_s + URI.unescape(v)))
+      end
+      return line
+    end
+      
+      # Unescape escaped params
+#      sorted_params.map! do |k, v|
+#        [k, URI.unescape(v)]
+#      end
+
+      # concatenate secret with names, values
+#      concatenated = @api_secret + sorted_params.join
 
     # Sign the given parameters and returns the signature
     def sign(params)
-      RubyDesk.logger.debug {"Params to sign: #{params.inspect}"}
+#      RubyDesk.logger.debug {"Params to sign: #{params.inspect}"}
       # sort parameters by its names (keys)
-      sorted_params = params.sort { |a, b| a.to_s <=> b.to_s}
+#      sorted_params = params.sort { |a, b| a.to_s <=> b.to_s}
 
-      RubyDesk.logger.debug {"Sorted params: #{sorted_params.inspect}"}
+#      RubyDesk.logger.debug {"Sorted params: #{sorted_params.inspect}"}
       
       # Unescape escaped params
-      sorted_params.map! do |k, v|
-        [k, URI.unescape(v)]
-      end
+#      sorted_params.map! do |k, v|
+#        [k, URI.unescape(v)]
+#      end
+      concatParams = norm_params(params)
 
       # concatenate secret with names, values
-      concatenated = @api_secret + sorted_params.join
+      concatenated = @api_secret + concatParams #sorted_params.join
 
       RubyDesk.logger.debug {"concatenated: #{concatenated}"}
 
@@ -49,6 +77,21 @@ module RubyDesk
       RubyDesk.logger.debug {"md5: #{md5}"}
 
       return md5
+    end
+    
+    def form_data(uri, params, rkey='')
+#      RubyDesk.logger.debug {"params hash: #{params}"}
+      params.map do |k, v|
+        if v.is_a?(Hash)
+          uri += form_data('', v, k.to_s)
+        else
+          uri += (rkey.empty? ? (k.to_s + '=' + URI.escape(v)) : 
+                        (rkey + '[' + k.to_s + ']' + '=' + URI.escape(v)))
+          uri += '&'
+        end
+      end
+      RubyDesk.logger.debug {"uri: #{uri}"}
+      return uri
     end
 
     # Returns the correct URL to go to to invoke the given api
@@ -83,7 +126,8 @@ module RubyDesk
 			http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       # Concatenate parameters to form data
-      data = api_call[:params].to_a.map{|pair| pair.map{|x| URI.escape(x.to_s)}.join '='}.join('&')
+#      data = api_call[:params].to_a.map{|pair| pair.map{|x| URI.escape(x.to_s)}.join '='}.join('&')
+      data = form_data('', api_call[:params]) 
       headers = {
         'Content-Type' => 'application/x-www-form-urlencoded'
       }
