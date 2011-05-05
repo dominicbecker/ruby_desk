@@ -25,6 +25,8 @@ module RubyDesk
       @api_token = api_token
     end
     
+    # Normalize parameters by sorting, flattening arrays; make a concatenated string of them
+    # for signing. 
     def norm_params(params, rkey='')
       line = '';
       
@@ -44,30 +46,14 @@ module RubyDesk
       return line
     end
       
-      # Unescape escaped params
-#      sorted_params.map! do |k, v|
-#        [k, URI.unescape(v)]
-#      end
-
-      # concatenate secret with names, values
-#      concatenated = @api_secret + sorted_params.join
-
     # Sign the given parameters and returns the signature
     def sign(params)
-#      RubyDesk.logger.debug {"Params to sign: #{params.inspect}"}
-      # sort parameters by its names (keys)
-#      sorted_params = params.sort { |a, b| a.to_s <=> b.to_s}
+      RubyDesk.logger.debug {"Params to sign: #{params.inspect}"}
 
-#      RubyDesk.logger.debug {"Sorted params: #{sorted_params.inspect}"}
-      
-      # Unescape escaped params
-#      sorted_params.map! do |k, v|
-#        [k, URI.unescape(v)]
-#      end
       concatParams = norm_params(params)
 
       # concatenate secret with names, values
-      concatenated = @api_secret + concatParams #sorted_params.join
+      concatenated = @api_secret + concatParams
 
       RubyDesk.logger.debug {"concatenated: #{concatenated}"}
 
@@ -79,18 +65,19 @@ module RubyDesk
       return md5
     end
     
-    def form_data(uri, params, rkey='')
-#      RubyDesk.logger.debug {"params hash: #{params}"}
+    # Helper to build the URI (also handles arrays of params (as hashes))
+    def build_uri(uri, params, rkey='')
       params.map do |k, v|
         if v.is_a?(Hash)
-          uri += form_data('', v, k.to_s)
+          uri += build_uri('', v, k.to_s)
         else
           uri += (rkey.empty? ? (k.to_s + '=' + URI.escape(v)) : 
                         (rkey + '[' + k.to_s + ']' + '=' + URI.escape(v)))
           uri += '&'
         end
       end
-      RubyDesk.logger.debug {"uri: #{uri}"}
+      
+      RubyDesk.logger.debug {"uri: #{uri}"} # TODO: remove?
       return uri
     end
 
@@ -126,8 +113,7 @@ module RubyDesk
 			http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       # Concatenate parameters to form data
-#      data = api_call[:params].to_a.map{|pair| pair.map{|x| URI.escape(x.to_s)}.join '='}.join('&')
-      data = form_data('', api_call[:params]) 
+      data = build_uri('', api_call[:params]) 
       headers = {
         'Content-Type' => 'application/x-www-form-urlencoded'
       }
