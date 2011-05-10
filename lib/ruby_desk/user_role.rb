@@ -1,6 +1,12 @@
 class RubyDesk::UserRole
   # Attribute readers for all attributes
-  attr_reader :parent_team__id, :user__first_name, :company__reference, :user__last_name, :reference, :team__reference, :affiliation_status, :user__reference, :user__is_provider, :parent_team__name, :has_team_room_access, :parent_team__reference, :team__id, :engagement__reference, :team__name, :company__name, :role, :user__id
+  attributes    :parent_team__id, :user__first_name, :permissions, 
+                :company__reference, :user__last_name, :team__is_hidden, 
+                :reference, :team__reference, :affiliation_status, 
+                :user__reference, :user__is_provider, :parent_team__name, 
+                :has_team_room_access, :parent_team__reference, :team__id, 
+                :engagement__reference, :team__name, :company__name, :role, 
+                :user__id
 
   class << self
     # Retrieves all team rooms for the currently logged in user

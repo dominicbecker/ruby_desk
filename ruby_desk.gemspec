@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby_desk}
-  s.version = "0.9.1.1"
+  s.version = "0.9.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ahmed ElDawy"]
-  s.date = %q{2011-05-05}
+  s.date = %q{2011-05-09}
   s.description = %q{A gem that works as an interface for oDesk APIs that can be used for both desktop and web applications}
   s.email = %q{ahmed.eldawy@badrit.com}
   s.extra_rdoc_files = [
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "lib/categories",
     "lib/ruby_desk.rb",
     "lib/ruby_desk/connector.rb",
+    "lib/ruby_desk/hrjob.rb",
     "lib/ruby_desk/job.rb",
     "lib/ruby_desk/odesk_entity.rb",
     "lib/ruby_desk/provider.rb",
@@ -46,7 +47,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/aseldawy/ruby_desk}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.7.2}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Wrapper for oDesk APIs in Ruby}
 
   if s.respond_to? :specification_version then
