@@ -1,4 +1,3 @@
-# A HR job with the following attributes
 class RubyDesk::HRJob < RubyDesk::OdeskEntity
   attributes    :reference, :title, :job_type, :description, :public_url, 
                 :created_time, :created_by, :start_date, :end_date, 
@@ -35,7 +34,7 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
   def self.retrieve(connector, job_reference)
     json = connector.prepare_and_invoke_api_call(
         'hr/v2/jobs/' + job_reference, :method=>:get,
-        :auth=>true, :sign=>true, :paraams=>{})
+        :auth=>true, :sign=>true, :params=>{})
     job = self.new(json['job'])
     return job
   end
