@@ -1,4 +1,4 @@
-class RubyDesk::UserRole
+class RubyDesk::UserRole < RubyDesk::OdeskEntity
   # Attribute readers for all attributes
   attributes    :parent_team__id, :user__first_name, :permissions, 
                 :company__reference, :user__last_name, :team__is_hidden, 

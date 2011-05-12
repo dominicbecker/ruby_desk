@@ -19,13 +19,13 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
   # Required parameter buyer_team__reference
   # query_options: optional parameters as described on oDesk developer site
   def self.retrieve_all(connector, buyer_team__reference, query_options={})
-    query_options['buyer_team__reference'] = buyer_team__reference
+    query_options[:buyer_team__reference] = buyer_team__reference
     json = connector.prepare_and_invoke_api_call(
         'hr/v2/jobs', :method=>:get,
-        :auth=>true, :sign=>true, :params=>query_options)
+        :auth=>true, :sign=>false, :params=>query_options)
     jobs = []
     if json['jobs']['job']
-      [json['jobs']['job']].flatten.each do |job
+      [json['jobs']['job']].flatten.each do |job|
         jobs << self.new(job)
       end 
     end
@@ -36,7 +36,9 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
     json = connector.prepare_and_invoke_api_call(
         'hr/v2/jobs/' + job_reference, :method=>:get,
         :auth=>true, :sign=>true, :paraams=>{})
-    job = self.new(json['job'].flatten)
+    job = self.new(json['job'])
     return job
   end
+  
+  # TODO: Implement method to update a job
 end

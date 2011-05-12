@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ahmed ElDawy"]
-  s.date = %q{2011-05-09}
+  s.date = %q{2011-05-11}
   s.description = %q{A gem that works as an interface for oDesk APIs that can be used for both desktop and web applications}
   s.email = %q{ahmed.eldawy@badrit.com}
   s.extra_rdoc_files = [
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "lib/categories",
     "lib/ruby_desk.rb",
     "lib/ruby_desk/connector.rb",
-    "lib/ruby_desk/hrjob.rb",
+    "lib/ruby_desk/hr_job.rb",
     "lib/ruby_desk/job.rb",
     "lib/ruby_desk/odesk_entity.rb",
     "lib/ruby_desk/provider.rb",
