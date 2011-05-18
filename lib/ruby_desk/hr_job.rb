@@ -7,6 +7,14 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
                 :visibility, :budget, :duration, :category, :subcategory, 
                 :num_candidates, :num_active_candidates, 
                 :num_new_candidates, :last_candidacy_access_time, :status
+
+  # Job cancellation reason codes
+  ACCIDENTAL_OPENING_CREATION = '67'
+  ALL_POSITIONS_FILLED = '51'
+  FILLED_BY_ALTERNATE_SOURCE = '49'
+  PROJECT_CANCELLED = '41'
+  NO_DEVELOPER_WITH_SKILLS = '34'
+
   
   def self.post(connector, query_options={})
     json = connector.prepare_and_invoke_api_call(
@@ -31,6 +39,7 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
     return jobs
   end
   
+  # Retrieve a specific job
   def self.retrieve(connector, job_reference)
     json = connector.prepare_and_invoke_api_call(
         'hr/v2/jobs/' + job_reference, :method=>:get,
@@ -39,5 +48,18 @@ class RubyDesk::HRJob < RubyDesk::OdeskEntity
     return job
   end
   
-  # TODO: Implement method to update a job
+  def self.cancel(connector, job_reference, why)
+    json = connector.prepare_and_invoke_api_call(
+        'hr/v2/jobs/' + job_reference, :method=>:post,
+        :auth=>true, :sign=>true, :params=>{:http_method=>"delete",:reason_code => why})
+    return json['response']
+  end
+  
+  def self.update(connector, job_reference, query_options={})
+    query_options[:http_method] = 'put'
+    json = connector.prepare_and_invoke_api_call(
+        'hr/v2/job/' + job_reference, :method=>:post,
+        :auth=>true, :sign=>false, :params=>query_options)
+    return json
+  end
 end
