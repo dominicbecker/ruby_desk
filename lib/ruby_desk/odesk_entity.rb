@@ -48,7 +48,7 @@ class RubyDesk::OdeskEntity
         options = att_names.delete_at -1
       end
       att_names.each do |att_name|
-        attr_reader att_name
+        attr_accessor att_name # TODO: need this for special purposes... should we really give write access though?
         @@complex_attributes[att_name.to_s] = options if options
       end
     end

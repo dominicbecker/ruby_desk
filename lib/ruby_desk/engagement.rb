@@ -3,7 +3,7 @@ class RubyDesk::Engagement < RubyDesk::OdeskEntity
                 :job__description, :buyer_team__reference, :buyer_team__id, 
                 :buyer_team__name, :buyer_company__reference, 
                 :buyer_company__name, :provider__reference, 
-                :provider_team__referebce, :provider_team__id, 
+                :provider_team__reference, :provider_team__id, 
                 :provider_team__name, :created_time, :engagement_term, 
                 :engagement_title, :engagement_job_type, :hourly_pay_rate, 
                 :hourly_charge_rate, :payment_guarantee_date, 
@@ -34,7 +34,7 @@ class RubyDesk::Engagement < RubyDesk::OdeskEntity
     json = connector.prepare_and_invoke_api_call(
         'hr/v2/engagements/' + engagement_reference, :method=>:get,
         :auth=>true, :sign=>true, :params=>{})
-    offer = self.new(json['offer'])
-    return offer
+    engagement = self.new(json['engagement'])
+    return engagement
   end
 end
