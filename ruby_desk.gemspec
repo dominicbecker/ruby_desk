@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby_desk}
-  s.version = "0.9.1.2"
+  s.version = "0.9.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ahmed ElDawy"]
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/ruby_desk/team_room.rb",
     "lib/ruby_desk/time_report.rb",
     "lib/ruby_desk/user_role.rb",
+    "lib/ruby_desk/user.rb",
     "test/empty_timereport.json",
     "test/frob.json",
     "test/helper.rb",

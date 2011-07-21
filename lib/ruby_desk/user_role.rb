@@ -22,7 +22,6 @@ class RubyDesk::UserRole < RubyDesk::OdeskEntity
       # return the resulting array
       user_roles
     end
-
   end
 
   # Create a new UserRole from a hash similar to the one in ActiveRecord::Base.

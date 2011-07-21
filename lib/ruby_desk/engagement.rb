@@ -10,7 +10,7 @@ class RubyDesk::Engagement < RubyDesk::OdeskEntity
                 :fixed_price_amount, :fixed_price_upfront_payment, 
                 :weekly_stipend_amount, :weekly_stipend_hours, 
                 :weekly_hours_limit, :engagement_start_date, 
-                :engagement_end_date
+                :engagement_end_date, :status
   
   # Required parameter buyer_team__reference
   # Useful optional parameter: job__reference
